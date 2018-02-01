@@ -7,6 +7,11 @@
   http://www.arduino.cc/en/Tutorial/Sweep
 */
 
+/* Other Mentions
+All other code written by Joseph Lee and Henry Forsyth
+  https://github.com/HullabalooRobotics/selfPlayingViolin.git
+*/
+
 #include <Servo.h>
 
 Servo servoOne;
