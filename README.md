@@ -1,16 +1,19 @@
-# Seld Playing Violin
+# Self Playing Violin
 Code for the 2018 science fair project of Joseph Lee and Henry Forsyth 
 
 ## Purpose
-This code is to be used with any comparable self playing violin kit. This kit exists to help students learn, without the need of a private teacher, the violin
+This code is to be used with any comparable self playing violin kit. This kit exists to help students learn the violin, without the need of a private teacher.
 
 ## Parts of the code
 
 
 ## CAD FILES:
 
+
 ### Bow
 
+
 ### Note Presser
+
 
 ### Full Assembly
