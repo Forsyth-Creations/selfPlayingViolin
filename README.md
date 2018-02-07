@@ -8,8 +8,9 @@ This code is to be used with any comparable self playing violin kit. This kit ex
 
 
 #CAD FILES:
-##Bow
 
-##Note Presser
+## Bow
 
-##Full Assembly
+## Note Presser
+
+## Full Assembly
