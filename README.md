@@ -11,9 +11,10 @@ This code is to be used with any comparable self playing violin kit. This kit ex
 
 
 ### Bow
-
+http://a360.co/2Ermh3B
 
 ### Note Presser
-
+http://a360.co/2kJeUuM
 
 ### Full Assembly
+http://a360.co/2yVJBSA
