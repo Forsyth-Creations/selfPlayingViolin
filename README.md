@@ -6,3 +6,10 @@ This code is to be used with any comparable self playing violin kit. This kit ex
 
 # Parts of the code
 
+
+#CAD FILES:
+##Bow
+
+##Note Presser
+
+##Full Assembly
