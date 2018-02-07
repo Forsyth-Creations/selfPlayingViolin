@@ -34,7 +34,8 @@ void setup() {
 }
 
 void loop() {
-  jingleBells();
+  //jingleBells();
+  initializeSongBasics(120);
 }
 void allUp() {
   servoOne.write(maxServoPos);              // tell servo to go to position in variable 'pos'
