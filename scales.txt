@@ -1,0 +1,4 @@
+D Scale(Configuration 2 on high): [0, 1, 2, 3, 0, 1, 2, 3, 3, 2, 1, 0, 3, 2, 1, 0]
+
+C Scale(Configuration 2 on low): [0, 1, 2, 3, 0, 1, 2, 3, 3, 2, 1, 0, 3, 2, 1, 0]
+
