@@ -21,7 +21,7 @@ Servo servoOne;
 Servo servoTwo;
 Servo servoThree;
 int pace = 8;
-int scale[] = {0, 2, 2, 0, 0, 2, 2, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 2, 2, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 2, 2, 0, 0, 3, 3, 0, 0, 2, 2, 0, 0, 1, 1, 0, 0, 0, 0, 0};
+int scale[] = {0, 2, 2, 0, 0, 2, 2, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 2, 2, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 2, 2, 0, 0, 3, 3, 0, 0, 2, 2, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0};
 int minServoPos = 50;
 int maxServoPos = 100;
 
@@ -38,18 +38,18 @@ void setup() {
 
 void loop() {
   //jingleBells();
-  
-    if(buttonState == 1){
+
+  if (buttonState == 1) {
     jingleBells(checkPotForTempo());
-    }
+  }
   checkButtonState();
   checkPotForTempo();
 }
-int checkPotForTempo(){
+int checkPotForTempo() {
   int x, y;
   y = analogRead(A5);
   x = map(y, 0, 1023, 30, 200);
-  return x;  
+  return x;
 }
 void allUp() {
   servoOne.write(maxServoPos);              // tell servo to go to position in variable 'pos'
@@ -97,9 +97,9 @@ void jingleBells(int tempoTwo) {
   for (i = 0; i < sizeof(scale) / sizeof(i); i = i + 1) {
     Serial.println(scale[i]);
     checkButtonState();
-      if(buttonState == 0){
+    if (buttonState == 0) {
       return;
-      }
+    }
     speedOfPlay = checkPotForTempo();
     if ( i == previousi) {
       delay(speedOfPlay);
