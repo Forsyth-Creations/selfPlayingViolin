@@ -266,7 +266,7 @@ void pauseFor(int delayTime) {
       Serial.println("BUTON PRESSED");
       delay(100);
       do {
-        delay(10);
+        delay(100);
       } while (digitalRead(buttonPin) == LOW);
      
     }
