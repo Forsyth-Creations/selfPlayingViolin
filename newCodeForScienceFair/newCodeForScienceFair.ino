@@ -262,10 +262,13 @@ void allOffExcept(int ledNumber) {
 
 void pauseFor(int delayTime) {
   int timeDelayStarted  = millis();
+  while ( digitalRead(buttonPin) == HIGH) {
+    delay(50);
+  }
   while (timeDelayStarted + delayTime > millis()) {
     if (digitalRead(buttonPin) == HIGH) {
       Serial.println("BUTTON PRESSED");
-      while( digitalRead(buttonPin) == HIGH){
+      while ( digitalRead(buttonPin) == HIGH) {
         delay(50);
       }
       return;
