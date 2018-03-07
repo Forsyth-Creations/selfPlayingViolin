@@ -258,19 +258,19 @@ void allOffExcept(int ledNumber) {
       analogWrite(led4Pin, brightness);
       break;
   }
-
 }
 
 void pauseFor(int delayTime) {
   int timeDelayStarted  = millis();
-  do {
+  while (timeDelayStarted + delayTime > millis()) {
     if (digitalRead(buttonPin) == HIGH) {
       Serial.println("BUTTON PRESSED");
-      delay(400);
+      while( digitalRead(buttonPin) == HIGH){
+        delay(50);
+      }
+      return;
     }
-    return;
-  } while (timeDelayStarted + delayTime > millis());
+  }
 }
-return;
-}
+
 
