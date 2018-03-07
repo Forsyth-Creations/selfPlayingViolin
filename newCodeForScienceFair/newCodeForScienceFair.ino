@@ -119,33 +119,37 @@ void allUpExcept(int servoNumber) {
 void playNote(int stringNumber, char note, int accidental) {
   //The violin strings are numbered left to right (G = 4, D = 3, A = 2, E = 1)
   //any input on the accidental should be either 1 (flat), 2 (Natural), or 3 (Sharp)
+  int flat = 1;
+  int natural = 2;
+  int sharp = 3;
+  
   switch (stringNumber) {
     case 1:
       break;
     case 2:
       break;
     case 3:
-      if (note == 'D' && accidental == 2) {
+      if (note == 'D' && accidental == natural) {
         moveServo(0, false);
         Serial.print("D string, note ");
         Serial.println(note);
       }
-      if (note == 'E' && accidental == 2) {
+      if (note == 'E' && accidental == natural) {
         moveServo(1, true);
         Serial.print("D string, note ");
         Serial.println(note);
       }
-      if (note == 'F' && accidental == 2) {
+      if (note == 'F' && accidental == natural) {
         moveServo(2, true);
         Serial.print("D string, note ");
         Serial.println(note);
       }
-      if (note == 'F' && accidental == 3) {
+      if (note == 'F' && accidental == sharp) {
         moveServo(3, true);
         Serial.print("D string, note ");
         Serial.println(note);
       }
-      if (note == 'G' && accidental == 2) {
+      if (note == 'G' && accidental == natural) {
         moveServo(4, true);
         Serial.print("D string, note ");
         Serial.println(note);
@@ -153,27 +157,27 @@ void playNote(int stringNumber, char note, int accidental) {
 
       break;
     case 4:
-      if (note == 'G' && accidental == 2) {
+      if (note == 'G' && accidental == natural) {
         moveServo(0, false);
         Serial.print("G string, note ");
         Serial.println(note);
       }
-      if (note == 'A' && accidental == 2) {
+      if (note == 'A' && accidental == natural) {
         moveServo(1, true);
         Serial.print("G string, note ");
         Serial.println(note);
       }
-      if (note == 'B' && accidental == 2) {
+      if (note == 'B' && accidental == natural) {
         moveServo(3, true);
         Serial.print("G string, note ");
         Serial.println(note);
       }
-      if (note == 'B' && accidental == 1) {
+      if (note == 'B' && accidental == flat) {
         moveServo(2, true);
         Serial.print("G string, note ");
         Serial.println(note);
       }
-      if (note == 'C' && accidental == 2) {
+      if (note == 'C' && accidental == natural) {
         moveServo(4, true);
         Serial.print("G string, note ");
         Serial.println(note);
@@ -229,30 +233,31 @@ void setAllToNinety() {
 }
 
 void allOffExcept(int ledNumber) {
+  int brightness = 200;
   switch (ledNumber) {
     case 1:
-      analogWrite(led1Pin, 200);
+      analogWrite(led1Pin, brightness);
       analogWrite(led2Pin, 0);
       analogWrite(led3Pin, 0);
       analogWrite(led4Pin, 0);
       break;
     case 2:
       analogWrite(led1Pin, 0);
-      analogWrite(led2Pin, 200);
+      analogWrite(led2Pin, brightness);
       analogWrite(led3Pin, 0);
       analogWrite(led4Pin, 0);
       break;
     case 3:
       analogWrite(led1Pin, 0);
       analogWrite(led2Pin, 0);
-      analogWrite(led3Pin, 200);
+      analogWrite(led3Pin, brightness);
       analogWrite(led4Pin, 0);
       break;
     case 4:
       analogWrite(led1Pin, 0);
       analogWrite(led2Pin, 0);
       analogWrite(led3Pin, 0);
-      analogWrite(led4Pin, 200);
+      analogWrite(led4Pin, brightness);
       break;
   }
 
