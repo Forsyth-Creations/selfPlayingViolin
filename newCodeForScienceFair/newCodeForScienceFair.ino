@@ -122,13 +122,13 @@ void playNote(int stringNumber, char note, int accidental) {
   int flat = 1;
   int natural = 2;
   int sharp = 3;
-  
+
   switch (stringNumber) {
-    case 1:
+    case 1: //E String
       break;
-    case 2:
+    case 2: //A String
       break;
-    case 3:
+    case 3: //D String
       if (note == 'D' && accidental == natural) {
         moveServo(0, false);
         Serial.print("D string, note ");
@@ -156,7 +156,7 @@ void playNote(int stringNumber, char note, int accidental) {
       }
 
       break;
-    case 4:
+    case 4: //G String
       if (note == 'G' && accidental == natural) {
         moveServo(0, false);
         Serial.print("G string, note ");
@@ -182,9 +182,7 @@ void playNote(int stringNumber, char note, int accidental) {
         Serial.print("G string, note ");
         Serial.println(note);
       }
-
       break;
-
   }
 }
 
@@ -264,20 +262,15 @@ void allOffExcept(int ledNumber) {
 }
 
 void pauseFor(int delayTime) {
-
-  for (int i = 0; i < delayTime/100; i++) {
-    delay(100);
+  int timeDelayStarted  = millis();
+  do {
     if (digitalRead(buttonPin) == HIGH) {
-      Serial.println("BUTON PRESSED");
-      delay(100);
-      do {
-        delay(100);
-      } while (digitalRead(buttonPin) == LOW);
-     
+      Serial.println("BUTTON PRESSED");
+      delay(400);
     }
-
-  }
+    return;
+  } while (timeDelayStarted + delayTime > millis());
+}
 return;
-
 }
 
