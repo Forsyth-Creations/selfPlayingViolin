@@ -187,23 +187,24 @@ void playNote(int stringNumber, char note, int accidental) {
 }
 
 void oneOctaveGScale() {
+  int speedOfNotes = 50;
   Serial.println("Starting Scale");
   playNote(4, 'G', 2);
-  pauseFor(1000);
+  pauseFor(speedOfNotes);
   playNote(4, 'A', 2);
-  pauseFor(1000);
+  pauseFor(speedOfNotes);
   playNote(4, 'B', 2);
-  pauseFor(1000);
+  pauseFor(speedOfNotes);
   playNote(4, 'C', 2);
-  pauseFor(1000);
+  pauseFor(speedOfNotes);
   playNote(3, 'D', 2);
-  pauseFor(1000);
+  pauseFor(speedOfNotes);
   playNote(3, 'E', 2);
-  pauseFor(1000);
+  pauseFor(speedOfNotes);
   playNote(3, 'F', 3);
-  pauseFor(1000);
+  pauseFor(speedOfNotes);
   playNote(3, 'G', 2);
-  pauseFor(1000);
+  pauseFor(speedOfNotes);
   //back down now
   playNote(3, 'G', 2);
   pauseFor(1000);
@@ -261,20 +262,31 @@ void allOffExcept(int ledNumber) {
 }
 
 void pauseFor(int delayTime) {
-  while ( digitalRead(buttonPin) == HIGH) {
-    delay(50);
-  }
+  /*
+  boolean stillPressed;
   int timeDelayStarted  = millis();
   while (timeDelayStarted + delayTime > millis()) {
+    Serial.print("timeDelayStarted :");
+    Serial.println(timeDelayStarted);
+    Serial.print("millis :");
+    Serial.println(millis());
+    /*
+    Serial.println("TEST 1");
     if (digitalRead(buttonPin) == HIGH) {
       Serial.println("BUTTON PRESSED");
       while ( digitalRead(buttonPin) == HIGH) {
         delay(50);
+        Serial.println("I'm Here 1");
       }
       Serial.println("Going back to code");
       return;
     }
-  }
+    */
+  //  delay(1);
+  //}
+  
+  
+  delay(delayTime);
 }
 
 
