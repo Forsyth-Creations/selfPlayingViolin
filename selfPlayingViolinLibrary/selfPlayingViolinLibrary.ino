@@ -1,9 +1,9 @@
 #include "selfPlayingViolin.h"
 
-selfPlayingViolin violin1(13);
+selfPlayingViolin violin1(13, 12, 11, 10);
 
 void setup(){}
 
 void loop (){
-  violin1.dot(); violin1.dot(); violin1.dot();
+  //violin1.moveServo(1, true);
   }
