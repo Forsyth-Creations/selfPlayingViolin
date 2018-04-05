@@ -6,15 +6,13 @@ Encoder myEnc(rotaryPin1, rotaryPin2);
 
 #include <LiquidCrystal.h>
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
-#define mainMenuLength 6
+#define mainMenuLength 4
 char* mainMenu[mainMenuLength] =
 {
   "Play a Scale       ",
   "Play from Phone    ",
   "Demo Mode          ",
   "More Info          ",
-  "Test 5",
-  "Test 6",
 };
 //------------Special Characters-------
 byte miniNote[8] = {
@@ -77,10 +75,13 @@ byte stem2[8] = {
   B00000,
   B00000,
 };
-//----------------------------------
+//------- Important Variables ---------------
 
 long rotarRead = 0;
 int whereInMenu = 0;
+
+//-------------------------------------------
+
 void setup() {
   lcd.createChar(1, stem1);
   lcd.createChar(2, note1);
@@ -91,7 +92,7 @@ void setup() {
   lcd.createChar(6, pointer);
   Serial.begin(9600);
   lcd.begin(20, 4);
-  initialize(0, 5, 3000);
+  initialize(0, 4, 3000);
 }
 
 void loop() {
@@ -99,6 +100,7 @@ void loop() {
   rotarRead = readRotar();
   //Serial.println(whereInMenu);
   if (buttonPressed()) {
+    rotarRead = 0;
     Serial.println("BUTTON PRESSED");
     switch (whereInMenu) {
       case 0:
@@ -107,12 +109,15 @@ void loop() {
         break;
       case 1:
         Serial.println(mainMenu[1]);
+        subMenuB();
         break;
       case 2:
         Serial.println(mainMenu[2]);
+        subMenuC();
         break;
       case 3:
         Serial.println(mainMenu[3]);
+        subMenuD();
         break;
       default:
         Serial.println("No menu selected from main screen");
@@ -123,12 +128,12 @@ void loop() {
 void initialize(int startingPointForMusicNote, int startingPointForText, int delayTime) { //All values refer to x
   writeMusicNote(startingPointForMusicNote);
   lcd.setCursor(startingPointForText , 1);
-  lcd.write(" Self-Playing");
+  lcd.write("  Self-Playing");
   lcd.setCursor(startingPointForText , 2);
-  lcd.write("   Violin  ");
+  lcd.write("     Violin  ");
   delay(delayTime);
 }
-//------- Write Music Note ----------------
+//------- Write Big Music Note ----------------
 
 void writeMusicNote(int xPos) {
   lcd.setCursor(xPos + 2 , 0);
@@ -157,8 +162,11 @@ long readRotar() {
 }
 //-------- Main Menu Print ----------------
 void printMainMenu() {
+  lcd.setCursor(0,0);
+  lcd.print("->");
   for (int i = 0; i <= 3; i++) {
     int x = ((rotarRead + i) % mainMenuLength);
+    Serial.println(x);
     lcd.setCursor(2, i);
     lcd.print(mainMenu[x]);
   }
@@ -174,14 +182,51 @@ boolean buttonPressed() {
   return b;
 }
 
-//-------- One Step in: Sub Menu A --------
+//-------- One Step in: Sub Menu A "PLAY A SCALE"--------
 
 void subMenuA(){
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("In sub menu A");
   while(!buttonPressed()){
-  Serial.println("Success");
+//Do stuff here
+  }
+  lcd.clear();
+}
+//-------- One Step in: Sub Menu B "PLAY FROM PHONE"--------
+void subMenuB(){
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("In sub menu B");
+  while(!buttonPressed()){
+//Do stuff here
+  }
+  lcd.clear();
+}
+//-------- One Step in: Sub Menu C "DEMO MODE"--------
+void subMenuC(){
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("In sub menu C");
+  while(!buttonPressed()){
+//Do stuff here
+  }
+  lcd.clear();
+}
+//-------- One Step in: Sub Menu D "MORE INFO"--------
+void subMenuD(){
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("In sub menu D");
+  while(!buttonPressed()){
+    lcd.setCursor(0,0);
+    lcd.print("  This device was  ");
+    lcd.setCursor(0,1);
+    lcd.print(" designed to teach.");
+    lcd.setCursor(0,2);
+    lcd.print("  Plain and simple ");
+    lcd.setCursor(0,3);
+    lcd.print("   -Forsyth/Lee  ");
   }
   lcd.clear();
 }
