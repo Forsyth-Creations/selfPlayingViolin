@@ -1,11 +1,27 @@
+//---------Encoder Stuff ---------------
 #include <Encoder.h>
 #define rotaryPin1 A1
 #define rotaryPin2 A2
 Encoder myEnc(rotaryPin1, rotaryPin2);
 #define buttonPinForRotar A0
 
+//------------Screen Stuff -------------
 #include <LiquidCrystal.h>
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+//------------Servo Stuff--------------
+#include <Servo.h>
+Servo servo1;
+Servo servo2;
+Servo servo3;
+Servo servo4;
+//-----------Hardware Definitions-------
+#define servoPin1 7
+#define servoPin2 6
+#define servoPin3 5
+#define servoPin4 4
+
+
 #define mainMenuLength 4
 char* mainMenu[mainMenuLength] =
 {
@@ -79,8 +95,18 @@ byte stem2[8] = {
 
 long rotarRead = 0;
 int whereInMenu = 0;
+const int upServo1 = 70;
+const int upServo2 = 0;
+const int upServo3 = 180;
+const int upServo4 = 150;
 
-//-------------------------------------------
+//---------- Scale Arrays  -- (1 is flat, 2 is natural, 3 is sharp)
+char gScaleStrings[] = {'G', };
+char gScaleNotes[] =   {'G', };
+int gScaleAccident[] = { 2 , };
+
+
+
 
 void setup() {
   lcd.createChar(1, stem1);
@@ -90,9 +116,14 @@ void setup() {
   lcd.createChar(5, pointer);
   lcd.createChar(0, miniNote);
   lcd.createChar(6, pointer);
+  servo1.attach(servoPin1);
+  servo2.attach(servoPin2);
+  servo3.attach(servoPin3);
+  servo4.attach(servoPin4);
   Serial.begin(9600);
   lcd.begin(20, 4);
   initialize(0, 4, 3000);
+  allUp();
 }
 
 void loop() {
@@ -133,8 +164,8 @@ void initialize(int startingPointForMusicNote, int startingPointForText, int del
   lcd.write("     Violin  ");
   delay(delayTime);
 }
-//------- Write Big Music Note ----------------
 
+//------- Write Big Music Note ----------------
 void writeMusicNote(int xPos) {
   lcd.setCursor(xPos + 2 , 0);
   lcd.write(byte(1));
@@ -160,9 +191,10 @@ long readRotar() {
   }
   return newPosition;
 }
+
 //-------- Main Menu Print ----------------
 void printMainMenu() {
-  lcd.setCursor(0,0);
+  lcd.setCursor(0, 0);
   lcd.print("->");
   for (int i = 0; i <= 3; i++) {
     int x = ((rotarRead + i) % mainMenuLength);
@@ -172,62 +204,221 @@ void printMainMenu() {
   }
   whereInMenu = ((rotarRead) % mainMenuLength);
 }
+
 //-------- Button Pressed -----------------
 boolean buttonPressed() {
   boolean b  = !digitalRead(buttonPinForRotar);
   while (digitalRead(buttonPinForRotar) == 0) {}
-  if(digitalRead(buttonPinForRotar) == 0){
+  if (digitalRead(buttonPinForRotar) == 0) {
     lcd.clear();
   }
   return b;
 }
 
 //-------- One Step in: Sub Menu A "PLAY A SCALE"--------
-
-void subMenuA(){
+void subMenuA() {
   lcd.clear();
-  lcd.setCursor(0,0);
+  lcd.setCursor(0, 0);
   lcd.print("In sub menu A");
-  while(!buttonPressed()){
-//Do stuff here
+  while (!buttonPressed()) {
+    //Do stuff here
   }
   lcd.clear();
 }
+
 //-------- One Step in: Sub Menu B "PLAY FROM PHONE"--------
-void subMenuB(){
+void subMenuB() {
   lcd.clear();
-  lcd.setCursor(0,0);
+  lcd.setCursor(0, 0);
   lcd.print("In sub menu B");
-  while(!buttonPressed()){
-//Do stuff here
+  while (!buttonPressed()) {
+    //Do stuff here
   }
   lcd.clear();
 }
+
 //-------- One Step in: Sub Menu C "DEMO MODE"--------
-void subMenuC(){
+void subMenuC() {
   lcd.clear();
-  lcd.setCursor(0,0);
+  lcd.setCursor(0, 0);
   lcd.print("In sub menu C");
-  while(!buttonPressed()){
-//Do stuff here
+  while (!buttonPressed()) {
+    //Do stuff here
   }
   lcd.clear();
 }
+
 //-------- One Step in: Sub Menu D "MORE INFO"--------
-void subMenuD(){
+void subMenuD() {
   lcd.clear();
-  lcd.setCursor(0,0);
+  lcd.setCursor(0, 0);
   lcd.print("In sub menu D");
-  while(!buttonPressed()){
-    lcd.setCursor(0,0);
+  while (!buttonPressed()) {
+    lcd.setCursor(0, 0);
     lcd.print("  This device was  ");
-    lcd.setCursor(0,1);
+    lcd.setCursor(0, 1);
     lcd.print(" designed to teach.");
-    lcd.setCursor(0,2);
+    lcd.setCursor(0, 2);
     lcd.print("  Plain and simple ");
-    lcd.setCursor(0,3);
+    lcd.setCursor(0, 3);
     lcd.print("   -Forsyth/Lee  ");
   }
   lcd.clear();
 }
 
+//----- SERVO STUFF SHOULD ALL BE BELOW THIS LINE. ALL MENUS SHOULD BE ABOVE-------
+void allUp() {
+  servo1.write(upServo1);
+  servo2.write(upServo2);
+  servo3.write(upServo3);
+  servo4.write(upServo4);
+}
+
+//--------Untested Method. Meant to play whatever scale is specified-----------
+void playScale(char notes[], int accidentals[], int howManyOctaves) {
+  howManyOctaves  = howManyOctaves * 8;
+  for ( int i; i < howManyOctaves; i++) {
+    //Play the Scale here
+    
+  }
+
+}
+
+//----- Important Method. Plays whatever note specified ----------
+void playNote(int stringNumber, char note, int accidental) {
+  //The violin strings are numbered left to right (G = 4, D = 3, A = 2, E = 1)
+  //any input on the accidental should be either 1 (flat), 2 (Natural), or 3 (Sharp)
+  int flat = 1;
+  int natural = 2;
+  int sharp = 3;
+
+  switch (stringNumber) {
+    case 1: //E String
+      break;
+    case 2: //A String
+      break;
+    case 3: //D String
+      if (note == 'D' && accidental == natural) {
+        moveServo(0, false);
+        Serial.print("D string, note ");
+        Serial.println(note);
+      }
+      if (note == 'E' && accidental == natural) {
+        moveServo(1, true);
+        Serial.print("D string, note ");
+        Serial.println(note);
+      }
+      if (note == 'F' && accidental == natural) {
+        moveServo(2, true);
+        Serial.print("D string, note ");
+        Serial.println(note);
+      }
+      if (note == 'F' && accidental == sharp) {
+        moveServo(3, true);
+        Serial.print("D string, note ");
+        Serial.println(note);
+      }
+      if (note == 'G' && accidental == natural) {
+        moveServo(4, true);
+        Serial.print("D string, note ");
+        Serial.println(note);
+      }
+
+      break;
+    case 4: //G String
+      if (note == 'G' && accidental == natural) {
+        moveServo(0, false);
+        Serial.print("G string, note ");
+        Serial.println(note);
+      }
+      if (note == 'A' && accidental == natural) {
+        moveServo(1, true);
+        Serial.print("G string, note ");
+        Serial.println(note);
+      }
+      if (note == 'B' && accidental == natural) {
+        moveServo(3, true);
+        Serial.print("G string, note ");
+        Serial.println(note);
+      }
+      if (note == 'B' && accidental == flat) {
+        moveServo(2, true);
+        Serial.print("G string, note ");
+        Serial.println(note);
+      }
+      if (note == 'C' && accidental == natural) {
+        moveServo(4, true);
+        Serial.print("G string, note ");
+        Serial.println(note);
+      }
+      break;
+  }
+}
+
+//--------- Moves a Servo Up or Down ------------------
+void moveServo(int whatServo, boolean upOrDown) {
+  //true means down
+  switch (whatServo) {
+      int i;
+    case 1:
+      i = whichWay(upOrDown);
+      servo1.write(upServo1 + (50 * i * -1));
+      break;
+    case 2:
+      i = whichWay(upOrDown);
+      servo2.write(upServo2 + (90 * i * -1 ));
+      break;
+    case 3:
+      i = whichWay(upOrDown);
+      servo3.write(upServo3 + (100 * i));
+      break;
+    case 4:
+      i = whichWay(upOrDown);
+      servo4.write(upServo4 + (50 * i));
+      break;
+    default:
+      allUp();
+  }
+  delay(160);
+  allUpExcept(whatServo);
+}
+
+//----Helps with servo orientation, to know which way is up, which way is down----
+int whichWay(boolean doYouKnowDaWay) {
+  int x;
+  if (doYouKnowDaWay == 1) {
+    x = -1;
+  }
+  else {
+    x = 1;
+  }
+  return x;
+}
+
+//-----Controls Servos. Moves all to up position except one specified -------------
+void allUpExcept(int servoNumber) {
+  switch (servoNumber) {
+    case 1:
+      servo2.write(upServo2);
+      servo3.write(upServo3);
+      servo4.write(upServo4);
+      break;
+    case 2:
+      servo1.write(upServo1);
+      servo3.write(upServo3);
+      servo4.write(upServo4);
+      break;
+    case 3:
+      servo1.write(upServo1);
+      servo2.write(upServo2);
+      servo4.write(upServo4);
+      break;
+    case 4:
+      servo1.write(upServo1);
+      servo2.write(upServo2);
+      servo3.write(upServo3);
+      break;
+    default:
+      allUp();
+  }
+}

@@ -23,10 +23,10 @@ int upServo4 = 150;
 
 void setup() {
   Serial.begin(9600);
-  servo1.attach(7);
-  servo2.attach(6);
-  servo3.attach(5);
-  servo4.attach(4);
+  servo1.attach(servoPin1);
+  servo2.attach(servoPin2);
+  servo3.attach(servoPin3);
+  servo4.attach(servoPin4);
   allUp();
   delay(500);
 }
