@@ -6,7 +6,7 @@
 #define stepperPin4 28
 const int stepsPerRevolution = 200; // change this to fit the number of steps per revolution for your motor
 const int speedOfStepperMotor = 60; //Value is represented in rpm, or revolutions per minute
-Stepper myStepper(stepsPerRevolution, stepperPin1, stepperPin2, stepperPin3, stepperPin4);
+Stepper bowStepper(stepsPerRevolution, stepperPin1, stepperPin2, stepperPin3, stepperPin4);
 //use  myStepper.step((-)stepsPerRevolution); to control motor
 // ^ Positive values are clockwise, whereas negative are counterclockwise
 
@@ -119,7 +119,7 @@ int gScaleAccident[] = { 2 , };
 
 //-------- Set-Up --------------
 void setup() {
-  myStepper.setSpeed(speedOfStepperMotor);
+  bowStepper.setSpeed(speedOfStepperMotor);
   lcd.createChar(1, stem1);
   lcd.createChar(2, note1);
   lcd.createChar(3, note2);
