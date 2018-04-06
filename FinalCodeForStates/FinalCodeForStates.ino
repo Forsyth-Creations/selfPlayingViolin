@@ -1,4 +1,16 @@
-//---------Encoder Stuff ---------------
+//--------- Stepper Motor Stuff --------
+#include <Stepper.h>
+#define stepperPin1 25
+#define stepperPin2 26
+#define stepperPin3 27
+#define stepperPin4 28
+const int stepsPerRevolution = 200; // change this to fit the number of steps per revolution for your motor
+const int speedOfStepperMotor = 60; //Value is represented in rpm, or revolutions per minute
+Stepper myStepper(stepsPerRevolution, stepperPin1, stepperPin2, stepperPin3, stepperPin4);
+//use  myStepper.step((-)stepsPerRevolution); to control motor
+// ^ Positive values are clockwise, whereas negative are counterclockwise
+
+//--------- Rotary Encoder Stuff ---------------
 #include <Encoder.h>
 #define rotaryPin1 A1
 #define rotaryPin2 A2
@@ -107,6 +119,7 @@ int gScaleAccident[] = { 2 , };
 
 //-------- Set-Up --------------
 void setup() {
+  myStepper.setSpeed(speedOfStepperMotor);
   lcd.createChar(1, stem1);
   lcd.createChar(2, note1);
   lcd.createChar(3, note2);
@@ -121,16 +134,15 @@ void setup() {
   Serial.begin(9600);
   lcd.begin(20, 4);
   initialize(0, 4, 3000);
-  allUp();
 }
 
 //---------- Loop --------------
 void loop() {
   printMainMenu();
   rotarRead = readRotar();
+  //readRotar();
   //Serial.println(whereInMenu);
   if (buttonPressed()) {
-    rotarRead = 0;
     Serial.println("BUTTON PRESSED");
     switch (whereInMenu) {
       case 0:
@@ -155,14 +167,29 @@ void loop() {
   }
 }
 
-//---------Initiatilize Sequence ---------
+//---------Initiatilize Sequence For Screen ---------
 void initialize(int startingPointForMusicNote, int startingPointForText, int delayTime) { //All values refer to x
   writeMusicNote(startingPointForMusicNote);
   lcd.setCursor(startingPointForText , 1);
   lcd.write("  Self-Playing");
   lcd.setCursor(startingPointForText , 2);
   lcd.write("     Violin  ");
+  initializeAllHardware();
   delay(delayTime);
+}
+
+//--------- Initialize All Components -----------
+void initializeAllHardware() {
+  allUp();
+  resetStepperMotors();
+}
+
+//------- Resets Position of Stepper Motors ----------
+void resetStepperMotors() {
+
+
+
+
 }
 
 //------- Write Big Music Note ----------------
@@ -183,11 +210,14 @@ void writeMusicNote(int xPos) {
 
 //--------- Rotar Below -------------------
 long oldPosition  = -999;
-long readRotar() {
+int readRotar() {
   long newPosition = myEnc.read() / 4;
   if (newPosition != oldPosition) {
     oldPosition = newPosition;
     lcd.clear();
+  }
+  if (buttonPressed()) {
+    newPosition = 0;
   }
   return newPosition;  //Should I make this a void and just put the value into rotar?
 }
@@ -424,8 +454,8 @@ void allUpExcept(int servoNumber) {
 
 //---- Custom Delay To Avoid Code Pause -----------
 void customDelay(int delayTimeMls) {
-    int x = millis();
-    while(x > (millis() + delayTimeMls)){
-//potentially readRotar() here? I want to exit the program if something happens
-      }
+  int x = millis();
+  while (x > (millis() + delayTimeMls)) {
+    //potentially readRotar() here? I want to exit the program if something happens
+  }
 }
