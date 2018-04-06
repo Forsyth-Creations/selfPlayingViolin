@@ -101,13 +101,11 @@ const int upServo3 = 180;
 const int upServo4 = 150;
 
 //---------- Scale Arrays  -- (1 is flat, 2 is natural, 3 is sharp)
-char gScaleStrings[] = {'G', };
+int gScaleStrings[] = {4, };
 char gScaleNotes[] =   {'G', };
 int gScaleAccident[] = { 2 , };
 
-
-
-
+//-------- Set-Up --------------
 void setup() {
   lcd.createChar(1, stem1);
   lcd.createChar(2, note1);
@@ -126,6 +124,7 @@ void setup() {
   allUp();
 }
 
+//---------- Loop --------------
 void loop() {
   printMainMenu();
   rotarRead = readRotar();
@@ -155,6 +154,7 @@ void loop() {
     }
   }
 }
+
 //---------Initiatilize Sequence ---------
 void initialize(int startingPointForMusicNote, int startingPointForText, int delayTime) { //All values refer to x
   writeMusicNote(startingPointForMusicNote);
@@ -189,7 +189,7 @@ long readRotar() {
     oldPosition = newPosition;
     lcd.clear();
   }
-  return newPosition;
+  return newPosition;  //Should I make this a void and just put the value into rotar?
 }
 
 //-------- Main Menu Print ----------------
@@ -275,13 +275,12 @@ void allUp() {
 }
 
 //--------Untested Method. Meant to play whatever scale is specified-----------
-void playScale(char notes[], int accidentals[], int howManyOctaves) {
+void playScale(int stringNumber[], char notes[], int accidentals[], int howManyOctaves, int delayTime) {
   howManyOctaves  = howManyOctaves * 8;
   for ( int i; i < howManyOctaves; i++) {
-    //Play the Scale here
-    
+    playNote(stringNumber[i], notes[i], accidentals[i]);
+    delay(delayTime);
   }
-
 }
 
 //----- Important Method. Plays whatever note specified ----------
@@ -421,4 +420,12 @@ void allUpExcept(int servoNumber) {
     default:
       allUp();
   }
+}
+
+//---- Custom Delay To Avoid Code Pause -----------
+void customDelay(int delayTimeMls) {
+    int x = millis();
+    while(x > (millis() + delayTimeMls)){
+//potentially readRotar() here? I want to exit the program if something happens
+      }
 }
