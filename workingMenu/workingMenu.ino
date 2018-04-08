@@ -151,12 +151,11 @@ void setup() {
   pinMode(lcdPin4, OUTPUT);
   pinMode(lcdPin5, OUTPUT);
   pinMode(lcdPin6, OUTPUT);
-  lcd.begin(20, 4);
   servo1.attach(servoPin1);
   servo2.attach(servoPin2);
   servo3.attach(servoPin3);
   servo4.attach(servoPin4);
-  bowStepper.setSpeed(0);
+  bowStepper.setSpeed(120);
   lcd.begin(20, 4);
   lcd.createChar(1, stem1);
   lcd.createChar(2, note1);
@@ -179,18 +178,22 @@ void loop() {
       case 0:
         Serial.println(mainMenu[0]);
         subMenuA();
+        myEnc.write(0);
         break;
       case 1:
         Serial.println(mainMenu[1]);
         subMenuB();
+        myEnc.write(0);
         break;
       case 2:
         Serial.println(mainMenu[2]);
         subMenuC();
+        myEnc.write(0);
         break;
       case 3:
         Serial.println(mainMenu[3]);
         subMenuD();
+        myEnc.write(0);
         break;
       default:
         Serial.println("No menu selected from main screen");
@@ -266,9 +269,8 @@ void printMenu(char* inputArray[], int menuLength) {
 boolean buttonPressed() {
   boolean b  = !digitalRead(buttonPinForRotar);
   while (digitalRead(buttonPinForRotar) == 0) {
-        myEnc.write(0);
-            lcd.clear();
-    }
+   // lcd.clear();
+  }
   return b;
 }
 
@@ -373,14 +375,14 @@ void resetStepperMotors() {
   Serial.println("initializing steppper");
   long timeCheck = millis();
   while (digitalRead(stepperMotorButtonPin) == 0 && (timeCheck + 6000) > millis()) {
-    //bowStepper.step(-10);
+    bowStepper.step(-15);
     Serial.println(digitalRead(stepperMotorButtonPin));
-    delay(100);
+    //delay(20);
   }
   delay(400);
   if (digitalRead(stepperMotorButtonPin) == 1) {
     Serial.println("Stepper Motor for Bow Calibrated");
-    //bowStepper.step(60);
+    bowStepper.step(60);
   }
   else {
     Serial.println("Calibration Failed. Check hardware, then restart program");

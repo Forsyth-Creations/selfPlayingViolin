@@ -50,7 +50,7 @@ Servo servo4;
 
 
 #define mainMenuLength 4
-char* mainMenu[mainMenuLength] =
+String mainMenu[mainMenuLength] =
 {
   "Play a Scale",
   "Play from Phone",
@@ -134,7 +134,6 @@ int gScaleAccident[] = { 2 , };
 
 //-------- Set-Up --------------
 void setup() {
-  bowStepper.setSpeed(speedOfStepperMotor);
   Serial.begin(9600);
   lcd.begin(20, 4);
   lcd.createChar(1, stem1);
@@ -148,13 +147,15 @@ void setup() {
   servo2.attach(servoPin2);
   servo3.attach(servoPin3);
   servo4.attach(servoPin4);
-  initialize(0, 4, 3000);
-  printMainMenu();
+  bowStepper.setSpeed(speedOfStepperMotor);
+  //initialize(0, 4, 3000);
+  //printMainMenu();
 }
 
 //---------- Loop --------------
 void loop() {
   readRotar();
+  findWhereInMenu(mainMenuLength);
   printMenu(mainMenu, whereInMenu, 0, mainMenuLength);
 
   if (buttonPressed()) {
@@ -170,22 +171,26 @@ void mainMenuManager() {
     case 0:
       Serial.println(mainMenu[0]);
       subMenuA();
-      printMenu(mainMenu, whereInMenu, 0, mainMenuLength);
+      printMainMenu();
+      rotarRead = 0;
       break;
     case 1:
       Serial.println(mainMenu[1]);
       subMenuB();
-      printMenu(mainMenu, whereInMenu, 0, mainMenuLength);
+      printMainMenu();
+      rotarRead = 0;
       break;
     case 2:
       Serial.println(mainMenu[2]);
       subMenuC();
-      printMenu(mainMenu, whereInMenu, 0, mainMenuLength);
+      printMainMenu();
+      rotarRead = 0;
       break;
     case 3:
       Serial.println(mainMenu[3]);
       subMenuD();
-      printMenu(mainMenu, whereInMenu, 0, mainMenuLength);
+      printMainMenu();
+      rotarRead = 0;
       break;
     default:
       Serial.println("No menu selected from main screen");
@@ -205,22 +210,18 @@ void initialize(int startingPointForMusicNote, int startingPointForText, int del
 
 //------ Test for printing a List from any Array ------
 int whereInMenuChangeCheck = -999;
-void printMenu(char* inputArray[], int topTerm, int loadingDelay, int menuLength) {
-  findWhereInMenu(menuLength);
-  if (whereInMenuChangeCheck != whereInMenu) {
-    lcd.clear();
-    delay(50);
-    topTerm = whereInMenu;
-    char* printValue;
-    for (int i = 0; i <= 3; i++) {
-      lcd.setCursor(1 , i);
-      printValue = inputArray[(i - (topTerm * -1)) % menuLength];
-      lcd.print(printValue);
-      delay(loadingDelay);
-    }
-    //whereInMenu = topTerm % menuLength;
-    whereInMenuChangeCheck = whereInMenu;
+void printMenu(String inputArray[], int topTerm, int loadingDelay, int menuLength) {
+  lcd.home();
+  lcd.setCursor(0,0);
+  lcd.print("->");
+  for (int i = 0; i <= 3; i++) {
+    int x = topTerm + i;
+    lcd.setCursor(2, i);
+    lcd.print(inputArray[x]);
   }
+  //Serial.println("IM HERE");
+  //whereInMenu = ((rotarRead) % menuLength);
+  
 }
 
 //--------- Initialize All Components -----------
@@ -231,7 +232,6 @@ void initializeAllHardware() {
 }
 
 //------- Resets Position of Stepper Motors ----------
-
 void resetStepperMotors() {
   Serial.println("initializing steppper");
   long timeCheck = millis();
@@ -268,31 +268,17 @@ void writeMusicNote(int xPos) {
 
 //--------- Rotar Below -------------------
 long oldPosition  = -999;
-void readRotar() {
+long readRotar() {
   long newPosition = myEnc.read() / 4;
-  if (newPosition != oldPosition) {
-    if (abs(newPosition - oldPosition) == (newPosition - oldPosition)) {
-      Serial.println("Positive Trend");
-      rotarRead = rotarRead + 1;
-      findWhereInMenu(mainMenuLength);
-      Serial.print("Rotar Read: ");
-      Serial.println(rotarRead);
-      Serial.print("Where in Menu: ");
-      Serial.println(whereInMenu);
-    }
-    else if (abs(newPosition - oldPosition) != (newPosition - oldPosition)) {
-      Serial.println("Negative Trend");
-      rotarRead = rotarRead - 1;
-      findWhereInMenu(mainMenuLength);
-      Serial.print("Rotar Read: ");
-      Serial.println(rotarRead);
-      Serial.print("Where in Menu: ");
-      Serial.println(whereInMenu);
-    }
-    oldPosition = newPosition;
-    rotarRead = newPosition;
-    delay(100);
+    if (newPosition < 0 || oldPosition < 0) {
+    newPosition = 0;
+    oldPosition = 0;
   }
+  if (newPosition != oldPosition) {
+    oldPosition = newPosition;
+    lcd.clear();
+  }
+  return newPosition;
 }
 
 ///------ Where in Menu below ----------------
@@ -552,7 +538,7 @@ void customDelay(int delayTimeMls) {
 }
 
 //-------- Helps locate the back option in any given menu ------
-/*
+
   int whereIsBackOption(char* menuTesting[], int menuLength) {
   int returnInt;
   for (int i; i <= menuLength; i++) {
@@ -565,5 +551,5 @@ void customDelay(int delayTimeMls) {
   }
   return returnInt;
   }
-*/
+
 
