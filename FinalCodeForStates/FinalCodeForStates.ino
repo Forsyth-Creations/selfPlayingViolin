@@ -1,21 +1,41 @@
+/*
+    Code designed for the Forsyth/Lee
+   self-playing violin. All parts/code can
+   be found on the github repo:
+
+*/
+
+//------ All Pin Definitions ----------
+#define stepperPin1 47
+#define stepperPin2 49
+#define stepperPin3 51
+#define stepperPin4 53
+#define rotaryPin1 A1
+#define rotaryPin2 A2
+#define stepperMotorButtonPin 28
+#define buttonPinForRotar A0
+#define servoPin1 A12
+#define servoPin2 A13
+#define servoPin3 A14
+#define servoPin4 A15
+#define lcdPin1 12
+#define lcdPin2 11
+#define lcdPin3 5
+#define lcdPin4 4
+#define lcdPin5 3
+#define lcdPin6 2
+
 //--------- Stepper Motor Stuff --------
 #include <Stepper.h>
-#define stepperPin1 25
-#define stepperPin2 26
-#define stepperPin3 27
-#define stepperPin4 28
 const int stepsPerRevolution = 200; // change this to fit the number of steps per revolution for your motor
 const int speedOfStepperMotor = 60; //Value is represented in rpm, or revolutions per minute
 Stepper bowStepper(stepsPerRevolution, stepperPin1, stepperPin2, stepperPin3, stepperPin4);
-//use  myStepper.step((-)stepsPerRevolution); to control motor
+//use bowStepper.step((-)stepsPerRevolution); to control motor
 // ^ Positive values are clockwise, whereas negative are counterclockwise
 
 //--------- Rotary Encoder Stuff ---------------
 #include <Encoder.h>
-#define rotaryPin1 A1
-#define rotaryPin2 A2
 Encoder myEnc(rotaryPin1, rotaryPin2);
-#define buttonPinForRotar A0
 
 //------------Screen Stuff -------------
 #include <LiquidCrystal.h>
@@ -27,20 +47,15 @@ Servo servo1;
 Servo servo2;
 Servo servo3;
 Servo servo4;
-//-----------Hardware Definitions-------
-#define servoPin1 7
-#define servoPin2 6
-#define servoPin3 5
-#define servoPin4 4
 
 
 #define mainMenuLength 4
 char* mainMenu[mainMenuLength] =
 {
-  "Play a Scale       ",
-  "Play from Phone    ",
-  "Demo Mode          ",
-  "More Info          ",
+  "Play a Scale",
+  "Play from Phone",
+  "Demo Mode",
+  "More Info",
 };
 //------------Special Characters-------
 byte miniNote[8] = {
@@ -120,6 +135,8 @@ int gScaleAccident[] = { 2 , };
 //-------- Set-Up --------------
 void setup() {
   bowStepper.setSpeed(speedOfStepperMotor);
+  Serial.begin(9600);
+  lcd.begin(20, 4);
   lcd.createChar(1, stem1);
   lcd.createChar(2, note1);
   lcd.createChar(3, note2);
@@ -131,39 +148,47 @@ void setup() {
   servo2.attach(servoPin2);
   servo3.attach(servoPin3);
   servo4.attach(servoPin4);
-  Serial.begin(9600);
-  lcd.begin(20, 4);
   initialize(0, 4, 3000);
+  printMainMenu();
 }
 
 //---------- Loop --------------
 void loop() {
-  printMainMenu();
-  rotarRead = readRotar();
-  //readRotar();
-  //Serial.println(whereInMenu);
+  readRotar();
+  printMenu(mainMenu, whereInMenu, 0, mainMenuLength);
+
   if (buttonPressed()) {
     Serial.println("BUTTON PRESSED");
-    switch (whereInMenu) {
-      case 0:
-        Serial.println(mainMenu[0]);
-        subMenuA();
-        break;
-      case 1:
-        Serial.println(mainMenu[1]);
-        subMenuB();
-        break;
-      case 2:
-        Serial.println(mainMenu[2]);
-        subMenuC();
-        break;
-      case 3:
-        Serial.println(mainMenu[3]);
-        subMenuD();
-        break;
-      default:
-        Serial.println("No menu selected from main screen");
-    }
+    mainMenuManager();
+  }
+
+}
+
+//-------- Helps Organize Loop-------
+void mainMenuManager() {
+  switch (whereInMenu) {
+    case 0:
+      Serial.println(mainMenu[0]);
+      subMenuA();
+      printMenu(mainMenu, whereInMenu, 0, mainMenuLength);
+      break;
+    case 1:
+      Serial.println(mainMenu[1]);
+      subMenuB();
+      printMenu(mainMenu, whereInMenu, 0, mainMenuLength);
+      break;
+    case 2:
+      Serial.println(mainMenu[2]);
+      subMenuC();
+      printMenu(mainMenu, whereInMenu, 0, mainMenuLength);
+      break;
+    case 3:
+      Serial.println(mainMenu[3]);
+      subMenuD();
+      printMenu(mainMenu, whereInMenu, 0, mainMenuLength);
+      break;
+    default:
+      Serial.println("No menu selected from main screen");
   }
 }
 
@@ -171,25 +196,58 @@ void loop() {
 void initialize(int startingPointForMusicNote, int startingPointForText, int delayTime) { //All values refer to x
   writeMusicNote(startingPointForMusicNote);
   lcd.setCursor(startingPointForText , 1);
-  lcd.write("  Self-Playing");
+  lcd.print("  Self-Playing");
   lcd.setCursor(startingPointForText , 2);
-  lcd.write("     Violin  ");
+  lcd.print("     Violin  ");
   initializeAllHardware();
   delay(delayTime);
+}
+
+//------ Test for printing a List from any Array ------
+int whereInMenuChangeCheck = -999;
+void printMenu(char* inputArray[], int topTerm, int loadingDelay, int menuLength) {
+  findWhereInMenu(menuLength);
+  if (whereInMenuChangeCheck != whereInMenu) {
+    lcd.clear();
+    delay(50);
+    topTerm = whereInMenu;
+    char* printValue;
+    for (int i = 0; i <= 3; i++) {
+      lcd.setCursor(1 , i);
+      printValue = inputArray[(i - (topTerm * -1)) % menuLength];
+      lcd.print(printValue);
+      delay(loadingDelay);
+    }
+    //whereInMenu = topTerm % menuLength;
+    whereInMenuChangeCheck = whereInMenu;
+  }
 }
 
 //--------- Initialize All Components -----------
 void initializeAllHardware() {
   allUp();
+  Serial.println("All Servos Up and Ready");
   resetStepperMotors();
 }
 
 //------- Resets Position of Stepper Motors ----------
+
 void resetStepperMotors() {
-
-
-
-
+  Serial.println("initializing steppper");
+  long timeCheck = millis();
+  while (digitalRead(stepperMotorButtonPin) == 0 && (timeCheck + 6000) > millis()) {
+    //bowStepper.step(-10);
+    Serial.println(digitalRead(stepperMotorButtonPin));
+    delay(100);
+  }
+  delay(400);
+  if (digitalRead(stepperMotorButtonPin) == 1) {
+    Serial.println("Stepper Motor for Bow Calibrated");
+    //bowStepper.step(60);
+  }
+  else {
+    Serial.println("Calibration Failed. Check hardware, then restart program");
+  }
 }
 
 //------- Write Big Music Note ----------------
@@ -210,25 +268,54 @@ void writeMusicNote(int xPos) {
 
 //--------- Rotar Below -------------------
 long oldPosition  = -999;
-int readRotar() {
+void readRotar() {
   long newPosition = myEnc.read() / 4;
   if (newPosition != oldPosition) {
+    if (abs(newPosition - oldPosition) == (newPosition - oldPosition)) {
+      Serial.println("Positive Trend");
+      rotarRead = rotarRead + 1;
+      findWhereInMenu(mainMenuLength);
+      Serial.print("Rotar Read: ");
+      Serial.println(rotarRead);
+      Serial.print("Where in Menu: ");
+      Serial.println(whereInMenu);
+    }
+    else if (abs(newPosition - oldPosition) != (newPosition - oldPosition)) {
+      Serial.println("Negative Trend");
+      rotarRead = rotarRead - 1;
+      findWhereInMenu(mainMenuLength);
+      Serial.print("Rotar Read: ");
+      Serial.println(rotarRead);
+      Serial.print("Where in Menu: ");
+      Serial.println(whereInMenu);
+    }
     oldPosition = newPosition;
-    lcd.clear();
+    rotarRead = newPosition;
+    delay(100);
   }
-  if (buttonPressed()) {
-    newPosition = 0;
+}
+
+///------ Where in Menu below ----------------
+void findWhereInMenu(int menuLength) {
+  if (rotarRead > 0)
+  {
+    whereInMenu = rotarRead % menuLength;
   }
-  return newPosition;  //Should I make this a void and just put the value into rotar?
+  else if (rotarRead < 0)
+  {
+    int toBeMapped = abs(rotarRead % menuLength);
+    whereInMenu = map(toBeMapped, 0, menuLength, menuLength, 0);
+  }
 }
 
 //-------- Main Menu Print ----------------
-void printMainMenu() {
+void printMainMenu() {  //You may want to consider making this a general function for printing any menu, similar to the old code.
   lcd.setCursor(0, 0);
   lcd.print("->");
   for (int i = 0; i <= 3; i++) {
     int x = ((rotarRead + i) % mainMenuLength);
-    Serial.println(x);
+    //int x = i;
+    //Serial.println(x);
     lcd.setCursor(2, i);
     lcd.print(mainMenu[x]);
   }
@@ -249,22 +336,24 @@ boolean buttonPressed() {
 void subMenuA() {
   lcd.clear();
   lcd.setCursor(0, 0);
-  lcd.print("In sub menu A");
+  lcd.print("SCALES HERE");
   while (!buttonPressed()) {
     //Do stuff here
   }
   lcd.clear();
+  delay(100);
 }
 
 //-------- One Step in: Sub Menu B "PLAY FROM PHONE"--------
 void subMenuB() {
   lcd.clear();
   lcd.setCursor(0, 0);
-  lcd.print("In sub menu B");
+  lcd.print("Work in Progress");
   while (!buttonPressed()) {
     //Do stuff here
   }
   lcd.clear();
+  delay(100);
 }
 
 //-------- One Step in: Sub Menu C "DEMO MODE"--------
@@ -276,6 +365,7 @@ void subMenuC() {
     //Do stuff here
   }
   lcd.clear();
+  delay(100);
 }
 
 //-------- One Step in: Sub Menu D "MORE INFO"--------
@@ -283,17 +373,18 @@ void subMenuD() {
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("In sub menu D");
+  lcd.setCursor(0, 0);
+  lcd.print("  This device was  ");
+  lcd.setCursor(0, 1);
+  lcd.print(" designed to teach.");
+  lcd.setCursor(0, 2);
+  lcd.print("  Plain and simple ");
+  lcd.setCursor(0, 3);
+  lcd.print("   -Forsyth/Lee  ");
   while (!buttonPressed()) {
-    lcd.setCursor(0, 0);
-    lcd.print("  This device was  ");
-    lcd.setCursor(0, 1);
-    lcd.print(" designed to teach.");
-    lcd.setCursor(0, 2);
-    lcd.print("  Plain and simple ");
-    lcd.setCursor(0, 3);
-    lcd.print("   -Forsyth/Lee  ");
   }
   lcd.clear();
+  delay(100);
 }
 
 //----- SERVO STUFF SHOULD ALL BE BELOW THIS LINE. ALL MENUS SHOULD BE ABOVE-------
@@ -305,7 +396,7 @@ void allUp() {
 }
 
 //--------Untested Method. Meant to play whatever scale is specified-----------
-void playScale(int stringNumber[], char notes[], int accidentals[], int howManyOctaves, int delayTime) {
+void playScale(int stringNumber[], char* notes[], int accidentals[], int howManyOctaves, int delayTime) {
   howManyOctaves  = howManyOctaves * 8;
   for ( int i; i < howManyOctaves; i++) {
     playNote(stringNumber[i], notes[i], accidentals[i]);
@@ -455,7 +546,24 @@ void allUpExcept(int servoNumber) {
 //---- Custom Delay To Avoid Code Pause -----------
 void customDelay(int delayTimeMls) {
   int x = millis();
-  while (x > (millis() + delayTimeMls)) {
+  while (x + delayTimeMls > millis()) {
     //potentially readRotar() here? I want to exit the program if something happens
   }
 }
+
+//-------- Helps locate the back option in any given menu ------
+/*
+  int whereIsBackOption(char* menuTesting[], int menuLength) {
+  int returnInt;
+  for (int i; i <= menuLength; i++) {
+    if ((menuTesting[i] == "Back") || (menuTesting[i] == "Go Back") || (menuTesting[i] == "BACK") || (menuTesting[i] == "GO BACK")) {
+      returnInt = i;
+      Serial.print("Back foudn in menu! It is this line in the array:");
+      Serial.println(returnInt);
+      break;
+    }
+  }
+  return returnInt;
+  }
+*/
+
