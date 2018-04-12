@@ -1,4 +1,7 @@
 //--------- Scales --------------------
+//We are going to need every scale, two octave, listed below:
+// A, B, C, D, E, F, G (They're all major)
+
 int gScaleStrings[] = {4, 4, 4, 4,};
 char gScaleNotes[] =   {'G', 'A', 'B', 'C',};
 int gScaleAccident[] = { 2 , 2, 2, 2,};
