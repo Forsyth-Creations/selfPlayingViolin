@@ -110,7 +110,7 @@ void playNote(int stringNumber, char note, int accidental) {
 }
 
 //--------Untested Method. Meant to play whatever scale is specified-----------
-void playScale(int stringNumber[], char* notes[], int accidentals[], int howManyOctaves, int delayTime) {
+void playScale(int stringNumber[], char notes[], int accidentals[], int howManyOctaves, int delayTime) {
   howManyOctaves  = howManyOctaves * 8;
   for ( int i; i < howManyOctaves; i++) {
     playNote(stringNumber[i], notes[i], accidentals[i]);
@@ -155,4 +155,33 @@ void allUp() {
   servo4.write(upServo4);
 }
 
+void servoTest() {
+  lcd.clear();
+  lcd.setCursor(8, 1);
+  lcd.print("Servo:");
+  //while (buttonPressed() == false) {}
+  moveServo(1, true);
+  lcd.setCursor(10, 2);
+  lcd.print("1");
+  while (buttonPressed() == false) {}
+  allUp();
+  moveServo(2, true);
+  lcd.setCursor(10, 2);
+  lcd.print("2");
+  while (buttonPressed() == false) {}
+  allUp();
+  moveServo(3, true);
+  lcd.setCursor(10, 2);
+  lcd.print("3");
+  while (buttonPressed() == false) {}
+  //delay(delayBetweenChecks);
+  allUp();
+  moveServo(4 , true);
+  lcd.setCursor(10, 2);
+  lcd.print("4");
+  while (buttonPressed() == false) {}
+  //delay(delayBetweenChecks);
+  allUp();
+  lcd.clear();
+}
 

@@ -15,7 +15,7 @@ void stepperMotorTest() {
 void resetStepperMotors() {
   Serial.println("initializing steppper");
   long timeCheck = millis();
-  while (digitalRead(stepperMotorButtonPin) == 0 && (timeCheck + 10000) > millis()) {
+  while ((digitalRead(stepperMotorButtonPin) == 0 && (timeCheck + 10000) > millis()) || buttonPressed() == true) {
     bowStepper.step(15);
     Serial.println(digitalRead(stepperMotorButtonPin));
     //      ();

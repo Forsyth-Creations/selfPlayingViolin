@@ -21,10 +21,11 @@ char* scaleMainMenu[scaleMainMenuLength] =
   "G Major,Two Octave",
   "Back",
 };
-#define troubleshootMenuLength 3
+#define troubleshootMenuLength 4
 char* troubleshootMenu[troubleshootMenuLength] =
 {
   "Servos All Up",
   "Run Stepper Motor",
+  "Check all Servos",
   "Back",
 };

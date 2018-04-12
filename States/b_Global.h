@@ -66,8 +66,10 @@ void allUp();
 int whichWay();
 void moveServo();
 void playNote(int stringNumber, char note, int accidental);
-void playScale(int stringNumber[], char* notes[], int accidentals[], int howManyOctaves, int delayTime);
+void playScale(int stringNumber[], char notes[], int accidentals[], int howManyOctaves, int delayTime);
 void allUpExcept(int servoNumber);
 void resetStepperMotors();
 void initializeAllHardware();
 void stepperMotorTest();
+void servoTest();
+

@@ -17,6 +17,7 @@ void subMenuA() {
       switch (whereInMenu) {
         case 0:
           Serial.println(scaleMainMenu[0]);
+          playScale(gScaleStrings, gScaleNotes, gScaleAccident, 1, 1000);
           //subMenuA();
           break;
         case 1:
@@ -115,7 +116,7 @@ void subMenuE() {
           break;
         case 2:
           Serial.println(troubleshootMenu[2]);
-          //subMenuC();
+          servoTest();
           break;
         case 3:
           Serial.println(troubleshootMenu[3]);
