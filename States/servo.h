@@ -163,23 +163,31 @@ void servoTest() {
   moveServo(1, true);
   lcd.setCursor(10, 2);
   lcd.print("1");
-  while (buttonPressed() == false) {}
+  while (buttonPressed() == false) {
+    delay(10);
+  }
   allUp();
   moveServo(2, true);
   lcd.setCursor(10, 2);
   lcd.print("2");
-  while (buttonPressed() == false) {}
+  while (buttonPressed() == false) {
+    delay(10);
+  }
   allUp();
   moveServo(3, true);
   lcd.setCursor(10, 2);
   lcd.print("3");
-  while (buttonPressed() == false) {}
+  while (buttonPressed() == false) {
+    delay(10);
+  }
   //delay(delayBetweenChecks);
   allUp();
   moveServo(4 , true);
   lcd.setCursor(10, 2);
   lcd.print("4");
-  while (buttonPressed() == false) {}
+  while (buttonPressed() == false) {
+    delay(10);
+  }
   //delay(delayBetweenChecks);
   allUp();
   lcd.clear();

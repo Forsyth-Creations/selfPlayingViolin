@@ -46,9 +46,9 @@ void subMenuB() {
   myEnc.write(0);
   lcd.clear();
   lcd.setCursor(0, 0);
-  lcd.print("Work in Progress");
+  lcd.print("    LISTENING...    ");
   while (!buttonPressed()) {
-    //Do stuff here
+    
   }
   lcd.clear();
   delay(100);

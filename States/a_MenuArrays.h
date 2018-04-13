@@ -12,13 +12,13 @@ char* mainMenu[mainMenuLength] =
 #define scaleMainMenuLength 8
 char* scaleMainMenu[scaleMainMenuLength] =
 {
-  "A Major,Two Octave",
-  "B Major,Two Octave",
-  "C Major,Two Octave",
-  "D Major,Two Octave",
-  "E Major,Two Octave",
-  "F Major,Two Octave",
-  "G Major,Two Octave",
+  "G Major,1 Octave",
+  "A Major,1 Octave",
+  "B♭Major,1 Octave",
+  "C Major,1 Octave",
+  "D Major,1 Octave",
+  "E♭ Major,1 Octave",
+  "F Major,1 Octave",
   "Back",
 };
 #define troubleshootMenuLength 4

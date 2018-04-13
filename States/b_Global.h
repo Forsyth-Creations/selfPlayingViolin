@@ -1,8 +1,8 @@
 //------ All Definitions -------------
 #define stepperPin1 45
 #define stepperPin2 43
-#define stepperPin3 41
-#define stepperPin4 39
+#define stepperPin3 39
+#define stepperPin4 41
 #define rotaryPin1 A1
 #define rotaryPin2 A2
 #define stepperMotorButtonPin 28

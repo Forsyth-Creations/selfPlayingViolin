@@ -48,3 +48,4 @@ void printMenu(char* inputArray[], int menuLength) {
   }
   whereInMenu = ((rotarRead) % menuLength);
 }
+
