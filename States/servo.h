@@ -13,26 +13,37 @@ int whichWay(boolean doYouKnowDaWay) {
 //--------- Moves a Servo Up or Down ------------------
 void moveServo(int whatServo, boolean upOrDown) {
   //true means down
-  switch (whatServo) {
-      int i;
-    case 1:
-      i = whichWay(upOrDown);
-      servo1.write(upServo1 + (50 * i * -1));
-      break;
-    case 2:
-      i = whichWay(upOrDown);
-      servo2.write(upServo2 + (90 * i * -1 ));
-      break;
-    case 3:
-      i = whichWay(upOrDown);
-      servo3.write(upServo3 + (100 * i));
-      break;
-    case 4:
-      i = whichWay(upOrDown);
-      servo4.write(upServo4 + (50 * i));
-      break;
-    default:
-      allUp();
+  //Serial.println("I made it here");
+  if (upOrDown == true) {
+    switch (whatServo) {
+      //int i;
+      case 4:
+        //i = whichWay(upOrDown);
+        servo1.write(downServo1);
+        //Serial.println("Servo 1");
+        whatServo = 1;
+        break;
+      case 3:
+        //i = whichWay(upOrDown);
+        servo2.write(downServo2);
+        //Serial.println("Servo 2");
+        whatServo = 2;
+        break;
+      case 2:
+        //i = whichWay(upOrDown);
+        servo3.write(downServo3);
+        // Serial.println("Servo 3");
+        whatServo = 3;
+        break;
+      case 1:
+        //i = whichWay(upOrDown);
+        servo4.write(downServo4);
+        //Serial.println("Servo 4");
+        whatServo = 4;
+        break;
+      default:
+        allUp();
+    }
   }
   delay(160);
   allUpExcept(whatServo);
@@ -53,7 +64,7 @@ void playNote(int stringNumber, char note, int accidental) {
       break;
     case 3: //D String
       if (note == 'D' && accidental == natural) {
-        moveServo(0, false);
+        moveServo(0, true);
         Serial.print("D string, note ");
         Serial.println(note);
       }
@@ -81,7 +92,7 @@ void playNote(int stringNumber, char note, int accidental) {
       break;
     case 4: //G String
       if (note == 'G' && accidental == natural) {
-        moveServo(0, false);
+        moveServo(0, true);
         Serial.print("G string, note ");
         Serial.println(note);
       }
@@ -111,10 +122,24 @@ void playNote(int stringNumber, char note, int accidental) {
 
 //--------Untested Method. Meant to play whatever scale is specified-----------
 void playScale(int stringNumber[], char notes[], int accidentals[], int howManyOctaves, int delayTime) {
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Currently Playing:");
+  lcd.setCursor(0, 1);
+  lcd.print(scaleMainMenu[whereInMenu]);
+  lcd.setCursor(0, 3);
+  lcd.print("      Enjoy!    ");
+  
   howManyOctaves  = howManyOctaves * 8;
-  for ( int i; i < howManyOctaves; i++) {
+  for ( int i = 0; i <= howManyOctaves; i++) {
     playNote(stringNumber[i], notes[i], accidentals[i]);
     delay(delayTime);
+    moveBow(90);
+  }
+  for ( int i = howManyOctaves * 8 ; i >= 0; i--) {
+    playNote(stringNumber[i], notes[i], accidentals[i]);
+    delay(delayTime);
+    moveBow(90);
   }
 }
 
@@ -145,7 +170,6 @@ void allUpExcept(int servoNumber) {
       allUp();
   }
 }
-
 
 //----- SERVO STUFF SHOULD ALL BE BELOW THIS LINE. ALL MENUS SHOULD BE ABOVE-------
 void allUp() {
@@ -191,5 +215,12 @@ void servoTest() {
   //delay(delayBetweenChecks);
   allUp();
   lcd.clear();
+}
+
+void fullyUpServos() {
+  servo1.write(0);
+  servo2.write(0);
+  servo3.write(180);
+  servo4.write(180);
 }
 

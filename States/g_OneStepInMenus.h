@@ -18,19 +18,30 @@ void subMenuA() {
         case 0:
           Serial.println(scaleMainMenu[0]);
           playScale(gScaleStrings, gScaleNotes, gScaleAccident, 1, 1000);
-          //subMenuA();
           break;
         case 1:
           Serial.println(scaleMainMenu[1]);
-          //subMenuB();
+          playScale(aScaleStrings, aScaleNotes, aScaleAccident, 1, 1000);
           break;
         case 2:
           Serial.println(scaleMainMenu[2]);
-          //subMenuC();
+          playScale(bflatScaleStrings, bflatScaleNotes, bflatScaleAccident, 1, 1000);
           break;
         case 3:
           Serial.println(scaleMainMenu[3]);
-          //subMenuD();
+          playScale(cScaleStrings, cScaleNotes, cScaleAccident, 1, 1000);
+          break;
+        case 4:
+          Serial.println(scaleMainMenu[3]);
+          playScale(dScaleStrings, dScaleNotes, dScaleAccident, 1, 1000);
+          break;
+        case 5:
+          Serial.println(scaleMainMenu[3]);
+          playScale(eflatScaleStrings, eflatScaleNotes, eflatScaleAccident, 1, 1000);
+          break;
+        case 6:
+          Serial.println(scaleMainMenu[3]);
+          playScale(fScaleStrings, fScaleNotes, fScaleAccident, 1, 1000);
           break;
         default:
           Serial.println("No menu selected from main screen");
@@ -46,9 +57,14 @@ void subMenuB() {
   myEnc.write(0);
   lcd.clear();
   lcd.setCursor(0, 0);
-  lcd.print("    LISTENING...    ");
+  lcd.print("    LISTENING...   ");
+  lcd.setCursor(0, 1);
+  lcd.print("   No Audio Source");
+  lcd.setCursor(0, 2);
+  lcd.print("     Detected     ");
+  
   while (!buttonPressed()) {
-    
+    delay(50);
   }
   lcd.clear();
   delay(100);
@@ -58,13 +74,20 @@ void subMenuB() {
 void subMenuC() {
   myEnc.write(0);
   lcd.clear();
-  lcd.setCursor(0, 0);
-  lcd.print("In sub menu C");
+  lcd.setCursor(0, 1);
+  lcd.print("Beginning Demo");
+  lcd.setCursor(0, 2);
+  lcd.print("Hold Button to Abort");
   while (!buttonPressed()) {
-    //Do stuff here
+    servo1.write(random(50, 140));
+    servo2.write(random(50, 140));
+    servo3.write(random(50, 140));
+    servo4.write(random(50, 140));
+    delay(1000);
   }
   lcd.clear();
   delay(100);
+  allUp();
 }
 
 //-------- One Step in: Sub Menu D "MORE INFO"--------
@@ -80,7 +103,7 @@ void subMenuD() {
   lcd.setCursor(0, 2);
   lcd.print("  Plain and simple ");
   lcd.setCursor(0, 3);
-  lcd.print("   -Forsyth/Lee  ");
+  lcd.print("   -The Creators  ");
   while (!buttonPressed()) {
   }
   lcd.clear();
@@ -108,7 +131,7 @@ void subMenuE() {
       switch (whereInMenu) {
         case 0:
           Serial.println(troubleshootMenu[0]);
-          allUp();
+          fullyUpServos();
           break;
         case 1:
           Serial.println(troubleshootMenu[1]);

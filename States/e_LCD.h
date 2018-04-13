@@ -22,7 +22,7 @@ void initialize(int startingPointForMusicNote, int startingPointForText, int del
   lcd.setCursor(startingPointForText , 2);
   lcd.write("   Violin  ");
   initializeAllHardware();
-  delay(delayTime);
+ // delay(delayTime);
 }
 
 //-------- Main Menu Print ----------------

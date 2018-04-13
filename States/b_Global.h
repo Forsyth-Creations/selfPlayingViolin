@@ -20,7 +20,7 @@
 
 //--------- Stepper Motor Stuff --------
 #include <Stepper.h>
-const int stepsPerRevolution = 400 ; // change this to fit the number of steps per revolution for your motor
+const int stepsPerRevolution = 200 ; // change this to fit the number of steps per revolution for your motor
 const int speedOfStepperMotor = 30; //Value is represented in rpm, or revolutions per minute
 Stepper bowStepper(stepsPerRevolution, stepperPin1, stepperPin2, stepperPin3, stepperPin4);
 //use bowStepper.step((-)stepsPerRevolution); to control motor
@@ -43,10 +43,20 @@ Servo servo4;
 //------ Critical Variables------------------
 long rotarRead = 0;
 int whereInMenu = 0;
+/*
 const int upServo1 = 70;
 const int upServo2 = 0;
 const int upServo3 = 180;
 const int upServo4 = 150;
+*/
+const int upServo1 = 100;
+const int upServo2 = 80;
+const int upServo3 = 70;
+const int upServo4 = 110;
+const int downServo1 = 150;
+const int downServo2 = 130;
+const int downServo3 = 0;
+const int downServo4 = 60;
 
 //-----  Function/Method Declarations ------
 void initializeAllHardware();
@@ -72,4 +82,6 @@ void resetStepperMotors();
 void initializeAllHardware();
 void stepperMotorTest();
 void servoTest();
+void fullyUpServos();
+void moveBow(int speedInRPM);
 

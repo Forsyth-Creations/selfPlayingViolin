@@ -74,14 +74,12 @@ void loop() {
     }
   }
 }
-
 //--------- Initialize All Components -----------
 void initializeAllHardware() {
   allUp();
   Serial.println("All Servos Up and Ready");
   resetStepperMotors();
 }
-
 //------- Back Finder-------------
 int whereIsBackOption(char* menuTesting[], int menuLength) {
   int returnInt;
