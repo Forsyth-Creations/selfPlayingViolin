@@ -105,6 +105,7 @@ void subMenuD() {
   lcd.setCursor(0, 3);
   lcd.print("   -The Creators  ");
   while (!buttonPressed()) {
+    delay(50);
   }
   lcd.clear();
   delay(100);

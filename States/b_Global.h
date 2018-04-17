@@ -49,14 +49,15 @@ const int upServo2 = 0;
 const int upServo3 = 180;
 const int upServo4 = 150;
 */
-const int upServo1 = 100;
-const int upServo2 = 80;
-const int upServo3 = 70;
-const int upServo4 = 110;
-const int downServo1 = 150;
-const int downServo2 = 130;
-const int downServo3 = 0;
-const int downServo4 = 60;
+const extern int upServo1 = 100;
+const extern int upServo2 = 80;
+const extern int upServo3 = 70;
+const extern int upServo4 = 110;
+const extern int downServo1 = 150;
+const extern int downServo2 = 130;
+const extern int downServo3 = 0;
+const extern int downServo4 = 60;
+char* extern keySignatureType; 
 
 //-----  Function/Method Declarations ------
 void initializeAllHardware();
@@ -84,4 +85,5 @@ void stepperMotorTest();
 void servoTest();
 void fullyUpServos();
 void moveBow(int speedInRPM);
-
+void whatNotePlaying(char notes[], int accident[], int test);
+int checkKeySignature(int accident[]);

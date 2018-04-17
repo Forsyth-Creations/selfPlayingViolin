@@ -4,7 +4,7 @@
 //G Scale
 int gScaleStrings[] = {4, 4, 4, 4, 3, 3, 3, 3,};
 char gScaleNotes[] =   {'G', 'A', 'B', 'C', 'D', 'E', 'F', 'G',};
-int gScaleAccident[] = { 2, 2, 2, 2, 2, 2, 2, 3, 2,};
+int gScaleAccident[] = { 2, 2, 2, 2, 2, 2, 3, 2,};
 
 //A Scale
 int aScaleStrings[] = {4, 4, 4, 3, 3, 3, 3, 2,};

@@ -122,25 +122,24 @@ void playNote(int stringNumber, char note, int accidental) {
 
 //--------Untested Method. Meant to play whatever scale is specified-----------
 void playScale(int stringNumber[], char notes[], int accidentals[], int howManyOctaves, int delayTime) {
+
+  howManyOctaves  = howManyOctaves * 7;
+  for (int i = 0; i <= howManyOctaves; i++) {
+    playNote(stringNumber[i], notes[i], accidentals[i]);
+    whatNotePlaying(notes, accidentals, i);
+    delay(delayTime);
+    //moveBow(30);
+  }
+  for (int j = howManyOctaves ; j >= 0; j--) {
+    playNote(stringNumber[j], notes[j], accidentals[j]);
+    whatNotePlaying(notes, accidentals, j);
+    delay(delayTime);
+    Serial.println(j);
+    //moveBow(30);
+  }
+  Serial.println("Ending Scale");
+  fullyUpServos();
   lcd.clear();
-  lcd.setCursor(0, 0);
-  lcd.print("Currently Playing:");
-  lcd.setCursor(0, 1);
-  lcd.print(scaleMainMenu[whereInMenu]);
-  lcd.setCursor(0, 3);
-  lcd.print("      Enjoy!    ");
-  
-  howManyOctaves  = howManyOctaves * 8;
-  for ( int i = 0; i <= howManyOctaves; i++) {
-    playNote(stringNumber[i], notes[i], accidentals[i]);
-    delay(delayTime);
-    moveBow(90);
-  }
-  for ( int i = howManyOctaves * 8 ; i >= 0; i--) {
-    playNote(stringNumber[i], notes[i], accidentals[i]);
-    delay(delayTime);
-    moveBow(90);
-  }
 }
 
 //-----Controls Servos. Moves all to up position except one specified -------------
@@ -222,5 +221,75 @@ void fullyUpServos() {
   servo2.write(0);
   servo3.write(180);
   servo4.write(180);
+}
+
+void whatNotePlaying(char notes[], int accident[], int test) {
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Currently Playing:");
+  lcd.setCursor(0, 1);
+  lcd.print(scaleMainMenu[whereInMenu]);
+  lcd.setCursor(0, 3);
+  //lcd.print("Enjoy!    ");
+
+  char* symbol = "A";
+  lcd.setCursor(0, 2);
+  lcd.print("Playing:");
+  lcd.setCursor(9, 2);
+  lcd.print(notes[test]);
+  lcd.setCursor(11, 2);
+  if (accident[test] == 1) {
+    symbol = "Flat";
+  }
+  else if (accident[test] == 2) {
+    symbol = "Natural";
+  }
+  else if (accident[test] == 3) {
+    symbol = "Sharp";
+  }
+  lcd.print(symbol);
+  lcd.setCursor(0, 3);
+  int amount = checkKeySignature(accident);
+  if (amount != 0) {
+    lcd.print(amount);
+  }
+  lcd.setCursor(2, 3);
+  lcd.print(keySignatureType);
+}
+
+int checkKeySignature(int accident[]) {
+  int counter = 0;
+  keySignatureType = " ";
+
+  for (int i = 0; i < 7; i++) {
+    if (accident[i] == 1) {
+      keySignatureType = "Flat";
+      Serial.println("FLAT SIGNATURE");
+      break;
+    }
+    else if (accident[i] == 3) {
+      keySignatureType = "Sharp";
+      Serial.println("SHARP SIGNATURE");
+      break;
+    }
+  }
+  if (keySignatureType == "Sharp") {
+    for (int i = 0; i < 7; i++) {
+      if (accident[i] == 3) {
+        counter++;
+        Serial.println("Sharp Found");
+      }
+    }
+  }
+  if (keySignatureType == "Flat") {
+    for (int i = 0; i < 7; i++) {
+      if (accident[i] == 1) {
+        counter++;
+        Serial.println("Flat Found");
+      }
+    }
+  }
+
+  return counter;
 }
 

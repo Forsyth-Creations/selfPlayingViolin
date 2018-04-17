@@ -1,14 +1,8 @@
 void stepperMotorTest() {
   bowStepper.setSpeed(40);
   // step one revolution  in one direction:
-  Serial.println("clockwise");
-  bowStepper.step(-stepsPerRevolution);
-  delay(500);
-
-  // step one revolution in the other direction:
-  Serial.println("counterclockwise");
-  bowStepper.step(stepsPerRevolution);
-  delay(500);
+  moveBow(65);
+  moveBow(65);
 }
 
 //------- Resets Position of Stepper Motors ----------
@@ -18,13 +12,15 @@ void resetStepperMotors() {
   long timeCheck = millis();
   while ((digitalRead(stepperMotorButtonPin) == 0 && (timeCheck + 10000) > millis()) && buttonPressed() == false) {
     Serial.println(digitalRead(-stepperMotorButtonPin));
-    bowStepper.step(-50);
+    bowStepper.setSpeed(45);
+    bowStepper.step(-20);
     delay(20);
   }
   delay(1000);
   if (digitalRead(stepperMotorButtonPin) == 1) {
     Serial.println("Stepper Motor for Bow Calibrated");
-    bowStepper.step(150);
+    bowStepper.setSpeed(15);
+    bowStepper.step(200);
   }
   else {
     Serial.println("Calibration Failed. Check hardware, then restart program");
@@ -36,12 +32,12 @@ void moveBow(int speedInRPM) {
   bowStepper.setSpeed(speedInRPM);
   if (currentPosition == 'D') {
     Serial.println("UP");
-    bowStepper.step(stepsPerRevolution * 2);
+    bowStepper.step(stepsPerRevolution);
     currentPosition = 'U';
   }
   else if (currentPosition == 'U') {
     Serial.println("DOWN");
-    bowStepper.step(-stepsPerRevolution * 2);
+    bowStepper.step(-stepsPerRevolution);
     currentPosition = 'D';
   }
 }
