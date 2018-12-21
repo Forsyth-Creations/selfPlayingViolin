@@ -1,3 +1,5 @@
+//#include "b_Global.h"
+
 //----Helps with servo orientation, to know which way is up, which way is down----
 int whichWay(boolean doYouKnowDaWay) {
   int x;
@@ -127,13 +129,17 @@ void playScale(int stringNumber[], char notes[], int accidentals[], int howManyO
   for (int i = 0; i <= howManyOctaves; i++) {
     playNote(stringNumber[i], notes[i], accidentals[i]);
     whatNotePlaying(notes, accidentals, i);
-    delay(delayTime);
+    moveBow(150);
+    //moveBow(150);
+    delay(50);
     //moveBow(30);
   }
   for (int j = howManyOctaves ; j >= 0; j--) {
     playNote(stringNumber[j], notes[j], accidentals[j]);
     whatNotePlaying(notes, accidentals, j);
-    delay(delayTime);
+    moveBow(150);
+    //moveBow(150);
+    delay(50);
     Serial.println(j);
     //moveBow(30);
   }
@@ -173,8 +179,11 @@ void allUpExcept(int servoNumber) {
 //----- SERVO STUFF SHOULD ALL BE BELOW THIS LINE. ALL MENUS SHOULD BE ABOVE-------
 void allUp() {
   servo1.write(upServo1);
+  delay(100);
   servo2.write(upServo2);
+  delay(100);
   servo3.write(upServo3);
+  delay(100);
   servo4.write(upServo4);
 }
 

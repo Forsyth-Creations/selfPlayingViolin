@@ -76,8 +76,10 @@ void loop() {
 }
 //--------- Initialize All Components -----------
 void initializeAllHardware() {
+  Serial.println("Self Playing Violin Running Version 2.0");
   allUp();
   Serial.println("All Servos Up and Ready");
+  delay(2000);
   resetStepperMotors();
 }
 //------- Back Finder-------------

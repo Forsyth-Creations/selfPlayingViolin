@@ -62,7 +62,7 @@ void subMenuB() {
   lcd.print("   No Audio Source");
   lcd.setCursor(0, 2);
   lcd.print("     Detected     ");
-  
+
   while (!buttonPressed()) {
     delay(50);
   }
@@ -144,7 +144,7 @@ void subMenuE() {
           break;
         case 3:
           Serial.println(troubleshootMenu[3]);
-          //subMenuD();
+          resetStepperMotors();
           break;
         default:
           Serial.println("No menu selected from main screen");

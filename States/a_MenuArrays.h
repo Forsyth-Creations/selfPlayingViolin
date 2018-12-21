@@ -21,11 +21,12 @@ char* scaleMainMenu[scaleMainMenuLength] =
   "F Major",
   "Back",
 };
-#define troubleshootMenuLength 4
+#define troubleshootMenuLength 5
 char* troubleshootMenu[troubleshootMenuLength] =
 {
   "Servos All Up",
   "Run Stepper Motor",
   "Check all Servos",
+  "Recalibrate Bow",
   "Back",
 };

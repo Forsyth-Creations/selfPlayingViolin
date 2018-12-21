@@ -57,7 +57,7 @@ const extern int downServo1 = 150;
 const extern int downServo2 = 130;
 const extern int downServo3 = 0;
 const extern int downServo4 = 60;
-char* extern keySignatureType; 
+extern char* keySignatureType = ""; 
 
 //-----  Function/Method Declarations ------
 void initializeAllHardware();
