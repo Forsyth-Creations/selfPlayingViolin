@@ -1,3 +1,4 @@
+#include "songs.h"
 #include "d_scales.h"
 #include "a_MenuArrays.h"
 #include "b_Global.h"
@@ -67,6 +68,11 @@ void loop() {
       case 4:
         Serial.println(mainMenu[4]);
         subMenuE();
+        myEnc.write(0);
+        break;
+      case 5: //HERE
+        Serial.println(mainMenu[5]);
+        subMenuF();
         myEnc.write(0);
         break;
       default:

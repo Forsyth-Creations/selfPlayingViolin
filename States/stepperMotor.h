@@ -1,8 +1,8 @@
 void stepperMotorTest() {
-  bowStepper.setSpeed(40);
+  bowStepper.setSpeed(50);
   // step one revolution  in one direction:
-  moveBow(150);
-  moveBow(150);
+  moveBow(180);
+  moveBow(180);
 }
 
 //------- Resets Position of Stepper Motors ----------

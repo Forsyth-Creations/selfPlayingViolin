@@ -154,3 +154,37 @@ void subMenuE() {
   lcd.clear();
   delay(100);
 }
+
+void subMenuF() { //HERE
+  myEnc.write(0);
+  myEnc.write(0);
+  lcd.clear();
+  lcd.setCursor(0, 0);
+
+  //lcd.print("Song Tab");
+
+  int back = whereIsBackOption(songSamples , songSampleMenuLength);
+  while (!buttonPressed() || whereInMenu != back) {
+    rotarRead = readRotar();
+    printMenu(songSamples, songSampleMenuLength);
+
+    if (whereInMenu == back && buttonPressed() == true) {
+      break;
+    }
+    else if (buttonPressed()) {
+      Serial.println("BUTTON PRESSED");
+      switch (whereInMenu) {
+        case 0:
+          Serial.println(songSamples[0]);
+          //JingleBells();
+          break;
+        default:
+          Serial.println("No menu selected from main screen");
+      }
+    }
+  }
+  lcd.clear();
+  delay(100);
+}
+
+

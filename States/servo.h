@@ -127,19 +127,21 @@ void playScale(int stringNumber[], char notes[], int accidentals[], int howManyO
 
   howManyOctaves  = howManyOctaves * 7;
   for (int i = 0; i <= howManyOctaves; i++) {
-    playNote(stringNumber[i], notes[i], accidentals[i]);
-    whatNotePlaying(notes, accidentals, i);
-    moveBow(150);
+    playNote(stringNumber[i], notes[i], accidentals[i]); //plays the note described by the index of the particular assigned array
+    whatNotePlaying(notes, accidentals, i); //outputs to LCD what note is playing
+    delay(100);
+    moveBow(180);
     //moveBow(150);
-    delay(50);
+    delay(100);
     //moveBow(30);
   }
   for (int j = howManyOctaves ; j >= 0; j--) {
     playNote(stringNumber[j], notes[j], accidentals[j]);
     whatNotePlaying(notes, accidentals, j);
-    moveBow(150);
+    delay(100);
+    moveBow(180);
     //moveBow(150);
-    delay(50);
+    delay(100);
     Serial.println(j);
     //moveBow(30);
   }
@@ -179,12 +181,13 @@ void allUpExcept(int servoNumber) {
 //----- SERVO STUFF SHOULD ALL BE BELOW THIS LINE. ALL MENUS SHOULD BE ABOVE-------
 void allUp() {
   servo1.write(upServo1);
-  delay(100);
+  delay(300);
   servo2.write(upServo2);
-  delay(100);
+  delay(300);
   servo3.write(upServo3);
-  delay(100);
+  delay(300);
   servo4.write(upServo4);
+  delay(300);
 }
 
 void servoTest() {
@@ -227,9 +230,13 @@ void servoTest() {
 
 void fullyUpServos() {
   servo1.write(0);
+  delay(200);
   servo2.write(0);
+  delay(200);
   servo3.write(180);
+  delay(200);
   servo4.write(180);
+  delay(200);
 }
 
 void whatNotePlaying(char notes[], int accident[], int test) {

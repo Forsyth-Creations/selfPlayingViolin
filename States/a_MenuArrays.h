@@ -1,5 +1,5 @@
 //------ Menus ---------------
-#define mainMenuLength 5
+#define mainMenuLength 6
 char* mainMenu[mainMenuLength] =
 {
   "Play a Scale       ",
@@ -7,6 +7,7 @@ char* mainMenu[mainMenuLength] =
   "Demo Mode          ",
   "More Info          ",
   "Troubleshooting",
+  "Prebuilt Songs", //HERE
 };
 
 #define scaleMainMenuLength 8
@@ -30,3 +31,21 @@ char* troubleshootMenu[troubleshootMenuLength] =
   "Recalibrate Bow",
   "Back",
 };
+#define songSampleMenuLength 2 //HERE
+char* songSamples[songSampleMenuLength] =
+{
+  "Jingle Bells",
+  "Back",
+};
+
+
+
+
+
+
+
+
+
+
+
+
